@@ -17,3 +17,38 @@ function handleLogin() {
     }
 }
 
+/**
+  API Connect
+ */
+async function fetchAllIssues() {
+    toggleLoading(true);
+    try {
+        const response = await fetch(`${API_BASE}/issues`);
+        const result = await response.json();
+        allIssuesData = result.data || result; 
+        displayIssues(allIssuesData);
+    } catch (error) {
+        console.error("Fetch Error:", error);
+    } finally {
+        toggleLoading(false);
+    }
+}
+
+/**
+ *  Search Functionality
+ */
+async function handleSearch() {
+    const query = document.getElementById('search-input').value;
+    if (!query.trim()) return fetchAllIssues();
+
+    toggleLoading(true);
+    try {
+        const response = await fetch(`${API_BASE}/issues/search?q=${query}`);
+        const result = await response.json();
+        displayIssues(result.data || result);
+    } catch (error) {
+        console.error("Search Error:", error);
+    } finally {
+        toggleLoading(false);
+    }
+}
