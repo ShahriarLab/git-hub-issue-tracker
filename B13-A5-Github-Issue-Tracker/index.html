@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Issue Tracker | Assignment 5</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="bg-gray-50 min-h-screen font-sans">
+
+    <div id="login-page" class="flex flex-col items-center justify-center min-h-screen px-4">
+        <div class="card w-full max-w-md bg-base-100 shadow-2xl p-8 border border-gray-100">
+            <div class="text-center mb-8">
+                <div class="flex justify-center mb-4">
+                    <img src="assets - Copy/github-logo.png" alt="GitHub Logo" class="w-16">
+                </div>
+                <h1 class="text-3xl font-bold text-gray-800">GitHub Issues Tracker</h1>
+                <p class="text-gray-500 mt-2">Sign in to manage your issues</p>
+            </div>
+
+            <div class="form-control w-full">
+                <label class="label"><span class="label-text font-semibold">Username</span></label>
+                <input type="text" id="username" placeholder="Enter username" class="input input-bordered w-full focus:border-primary" />
+            </div>
+
+            <div class="form-control w-full mt-4">
+                <label class="label"><span class="label-text font-semibold">Password</span></label>
+                <input type="password" id="password" placeholder="Enter password" class="input input-bordered w-full focus:border-primary" />
+            </div>
+
+            <button onclick="handleLogin()" class="btn btn-primary w-full mt-8 text-white text-lg">Sign In</button>
+            
+            <div class="divider my-8 text-gray-400 font-bold text-sm">OR</div>
+            
+            <p class="text-center bg-blue-10 py-1 rounded-t-lg text-sm font-semibold">Demo Credentials:</p>
+            <div class="p-4 bg-yellow-50 rounded-b-lg border border-white-100 text-sm text-center">
+                <code class="text-xs">Username: admin</code><br>
+                <code class="text-xs">Password: admin123</code>
+            </div>
+        </div>
+    </div>
+
+    <div id="main-page" class="hidden animate-in fade-in duration-500">
+        <nav class="navbar bg-white border-b sticky top-0 z-50 px-4 lg:px-20 shadow-sm">
+            <div class="flex-1">
+                <div class="flex items-center gap-2 cursor-pointer" onclick="location.reload()">
+                    <span class="text-2xl"><img src="assets - Copy/github-logo.png" alt=""></span>
+                    <span class="text-xl font-bold tracking-tight">GitTracker</span>
+                </div>
+            </div>
+            <div class="flex-none gap-2">
+                <div class="join">
+                    <input type="text" id="search-input" placeholder="Search issues,,,,,,,," class="input input-bordered join-item w-32 md:w-64 focus:outline-none" />
+                    <button onclick="handleSearch()" class="btn btn-primary join-item text-white">+New Issue</button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="container mx-auto px-4 lg:px-20 py-10">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+                <div class="tabs tabs-boxed bg-gray-100 p-1">
+                    <button onclick="filterIssues('all')" id="tab-all" class="tab tab-active transition-all">All</button> 
+                    <button onclick="filterIssues('open')" id="tab-open" class="tab transition-all">Open</button> 
+                    <button onclick="filterIssues('closed')" id="tab-closed" class="tab transition-all">Closed</button>
+                </div>
+
+                <div class="flex items-center gap-6 p-3 bg-white border rounded-xl shadow-sm px-6">
+                    <div class="flex items-center gap-2">
+                        <span class="text-gray-400"><img src="assets - Copy/Aperture.png" alt=""></span>
+                        <span class="font-medium text-gray-600">Total: <span id="issue-count" class="text-primary font-bold">0</span></span>
+                    </div>
+                    <div class="flex gap-4 text-xs font-bold uppercase tracking-wider">
+                        <span class="text-green-600 flex items-center gap-1">● Open</span>
+                        <span class="text-purple-600 flex items-center gap-1">● Closed</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="loading-spinner" class="hidden flex flex-col items-center justify-center py-20">
+                <span class="loading loading-spinner loading-lg text-primary"></span>
+                <p class="mt-4 text-gray-500 font-medium">Fetching issues...</p>
+            </div>
+
+            <div id="issues-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+        </main>
+    </div>
+
+    <dialog id="details_modal" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box max-w-3xl border-t-8 border-primary">
+            <h3 id="modal-title" class="text-2xl font-bold text-gray-800">Issue Title</h3>
+            <div id="modal-content" class="py-6 space-y-4"></div>
+            <div class="modal-action">
+                <form method="dialog">
+                   <button class="btn btn-primary">Close Details</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
+    <script src="Script/script.js"></script>
+</body>
+</html>
