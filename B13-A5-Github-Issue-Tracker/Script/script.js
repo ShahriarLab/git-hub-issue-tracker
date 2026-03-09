@@ -109,3 +109,60 @@ function displayIssues(issues) {
     });
 }
 
+/**
+ (Button Design Update)
+ */
+function filterIssues(status) {
+    const tabs = ['all', 'open', 'closed'];
+    tabs.forEach(t => {
+        const el = document.getElementById(`tab-${t}`);
+        if(t === status) {
+            el.classList.add('tab-active', 'bg-primary', 'text-white');
+            el.classList.remove('bg-gray-100');
+        } else {
+            el.classList.remove('tab-active', 'bg-primary', 'text-white');
+            el.classList.add('bg-gray-100');
+        }
+    });
+
+    if (status === 'all') {
+        displayIssues(allIssuesData);
+    } else {
+        const filtered = allIssuesData.filter(item => item.status.toLowerCase() === status);
+        displayIssues(filtered);
+    }
+}
+
+/**
+ Modal Handler
+ */
+async function showIssueDetails(id) {
+    try {
+        const response = await fetch(`${API_BASE}/issue/${id}`);
+        const result = await response.json();
+        const issue = result.data || result;
+
+        document.getElementById('modal-title').innerText = issue.title;
+        document.getElementById('modal-content').innerHTML = `
+            <div class="bg-gray-50 p-4 rounded-lg italic text-gray-600">
+                "${issue.description}"
+            </div>
+            <div class="grid grid-cols-2 gap-4 pt-4 text-sm">
+                <p><strong>Status:</strong> ${issue.status}</p>
+                <p><strong>Category:</strong> ${issue.category}</p>
+                <p><strong>Label:</strong> ${issue.label}</p>
+                <p><strong>Priority:</strong> ${issue.priority}</p>
+                <p><strong>Author:</strong> ${issue.author}</p>
+                <p><strong>Date:</strong> ${new Date(issue.createdAt).toLocaleDateString()}</p>
+            </div>
+        `;
+        document.getElementById('details_modal').showModal();
+    } catch (error) {
+        console.error("Modal Data Error:", error);
+    }
+}
+
+function toggleLoading(show) {
+    document.getElementById('loading-spinner').classList.toggle('hidden', !show);
+    document.getElementById('issues-container').classList.toggle('hidden', show);
+}
